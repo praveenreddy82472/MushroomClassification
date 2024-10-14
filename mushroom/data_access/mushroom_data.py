@@ -7,6 +7,7 @@ import json
 from mushroom.configuration.mongo_db_connection import MongoDBClient
 from mushroom.constant.database import DATABASE_NAME
 from mushroom.exception import MushroomException
+from mushroom.logger import logging
 
 
 class MushroomData:
@@ -19,6 +20,7 @@ class MushroomData:
         """
         try:
             self.mongo_client = MongoDBClient(database_name=DATABASE_NAME)
+            logging.info(f"Connected to database: {DATABASE_NAME}")
 
         except Exception as e:
             raise MushroomException(e, sys)
@@ -46,12 +48,16 @@ class MushroomData:
             export entire collectin as dataframe:
             return pd.DataFrame of collection
             """
+            logging.info(f"Fetching data from collection: {collection_name}")
             if database_name is None:
                 collection = self.mongo_client.database[collection_name]
             else:
                 collection = self.mongo_client[database_name][collection_name]
             df = pd.DataFrame(list(collection.find()))
-
+            
+            
+            logging.info(f"Fetched {len(df)} records from the collection: {collection_name}")
+            logging.info(f"Fetched DataFrame: {df.head()}")
             if "_id" in df.columns.to_list():
                 df = df.drop(columns=["_id"], axis=1)
 
