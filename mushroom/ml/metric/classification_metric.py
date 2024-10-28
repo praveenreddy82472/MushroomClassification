@@ -14,8 +14,9 @@ def get_classification_score(y_true, y_pred) -> ClassificationMetricArtifact:
         unique_true = np.unique(y_true)
         unique_pred = np.unique(y_pred)
         
-        print("Unique values in y_true:", unique_true)
-        print("Unique values in y_pred:", unique_pred)
+        # if you want konw the type of y_true and y_pred
+        #print("Unique values in y_true:", unique_true)
+        #print("Unique values in y_pred:", unique_pred)
 
         # Check for any unknown labels
         if not (set(unique_true) <= {0, 1} and set(unique_pred) <= {0, 1}):
